@@ -1,22 +1,44 @@
 ---
 
-- hosts: all
+- name: Instala Apache en webservers y agrega soporte PHP
+  hosts: webservers
   become: true
   tasks:
 
   - name: update repository index
     apt:
       update_cache: yes
-    when: ansible_distribution == "Ubuntu" and ansible_distirbution_version == "8.2" 
+    when: ansible_distribution == "Ubuntu" 
 
-  - name: install apache2 package
+  - name: Instala Apache2
     apt:
       name: apache2
-      state: latest
+      state: absent
     when: ansible_distribution in ["Ubuntu", "Debian"]
 
-  - name: add php support for apache
+  - name: Agrega soporte PHP para Apache2
     apt:
       name: libapache2-mod-php
-      state: latest
+      state: absent
     when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Instala Nginx en databases
+  hosts: databases
+  become: true
+  tasks:
+  
+  - name: update repository index
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: instala la ultima version de nginx
+    apt: 
+      name: nginx
+      state: absent
+
+  - name: inicia nginx
+    service:
+      name: nginx
+      state: stopped
+
