@@ -13,13 +13,13 @@
   - name: Instala Apache2
     apt:
       name: apache2
-      state: absent
+      state: latest
     when: ansible_distribution in ["Ubuntu", "Debian"]
 
   - name: Agrega soporte PHP para Apache2
     apt:
       name: libapache2-mod-php
-      state: absent
+      state: present
     when: ansible_distribution in ["Ubuntu", "Debian"]
 
 - name: Instala Nginx en databases
@@ -40,5 +40,5 @@
   - name: inicia nginx
     service:
       name: nginx
-      state: stopped
+      state: started
 
