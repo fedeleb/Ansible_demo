@@ -1,6 +1,6 @@
 ---
 
-- name: Instala Apache en webservers y agrega soporte PHP
+- name: Desinstalar Apache en webservers y elimina el soporte PHP
   hosts: webservers
   become: true
   tasks:
@@ -10,19 +10,19 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu" 
 
-  - name: Instala Apache2
+  - name: Desinstala Apache2
     apt:
       name: apache2
       state: absent
     when: ansible_distribution in ["Ubuntu", "Debian"]
 
-  - name: Agrega soporte PHP para Apache2
+  - name: Remueve soporte PHP para Apache2
     apt:
       name: libapache2-mod-php
       state: absent
     when: ansible_distribution in ["Ubuntu", "Debian"]
 
-- name: Instala Nginx en databases
+- name: Desinstala Nginx de databases
   hosts: databases
   become: true
   tasks:
@@ -32,12 +32,12 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
-  - name: instala la ultima version de nginx
+  - name: Desinstala nginx
     apt: 
       name: nginx
       state: absent
 
-  - name: inicia nginx
+  - name: Detiene nginx
     service:
       name: nginx
       state: stopped
